@@ -5,19 +5,21 @@ import 'package:demo7_pro/services/app.dart';
 import 'dart:async';
 import 'package:logger/logger.dart';
 
-class RootController extends GetxController {
+class TabbarController extends GetxController {
   /// 重新登录事件
   StreamSubscription<NeedReLoginEvent> _needLogin;
 
   @override
-  void onInit() {
+  void onInit(){
+    Logger().i('tabbar controller 检查到需要跳转登录页');
     _needLogin =
         EventBusUtil.instance.eventBus.on<NeedReLoginEvent>().listen((event) {
-      needLogin();
-    });
+          needLogin();
+        });
     this.init();
     super.onInit();
   }
+
 
   void init() async {
     /// 初始化应用状态
@@ -28,13 +30,9 @@ class RootController extends GetxController {
     await AppService.clearPrefers();
     Logger().i('检查到需要跳转登录页');
 
-    var test =await Get.rootDelegate.canPopHistory();
-
-    var test2 =await Get.rootDelegate.canPopPage();
-
-    Logger().i('查看报错、?$test$test2');
 
     /// 转到登录页
     Get.rootDelegate.offNamed('/login');
   }
+
 }

@@ -4,6 +4,7 @@ import 'package:demo7_pro/route/route_util.dart' show pop;
 import 'package:demo7_pro/widgets/button.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 /// 通用确认弹窗
 class AppConfirm extends StatelessWidget {
@@ -145,7 +146,7 @@ class AppConfirm extends StatelessWidget {
             showShadow: false,
             textColor: AppTheme.secondTextColor,
             onPressed: () {
-              pop(context, result: false);
+              Get.rootDelegate.popRoute(popMode: PopMode.History,result:false);
             },
           ),
         ),
@@ -155,7 +156,7 @@ class AppConfirm extends StatelessWidget {
             text: confirmText ?? '确认',
             color: AppTheme.primaryColor,
             onPressed: () {
-              pop(context, result: true);
+              Get.rootDelegate.popRoute(popMode: PopMode.History,result:true);
             },
           ),
         ),

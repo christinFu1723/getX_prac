@@ -8,7 +8,7 @@ import 'package:demo7_pro/model/pay/wechat_pay.dart'
 import 'package:fluwx/fluwx.dart' as fluwx;
 import 'package:tobias/tobias.dart' as tobias;
 import 'dart:async';
-
+import 'package:get/get.dart';
 class CashierPage extends StatefulWidget {
   @override
   _CashierState createState() => _CashierState();
@@ -18,7 +18,10 @@ class _CashierState extends State<CashierPage> {
   @override
   Widget build(BuildContext context) {
     return AppSliverScaffold(
-      title: '测试支付',
+      titleWidget: GestureDetector(
+        child: Text('测试支付(点击此处返回)',style: TextStyle(color: Colors.blueGrey),),
+        onTap: ()=>Get.rootDelegate.popRoute(popMode: PopMode.History),
+      ),
       body: Container(
         child: Column(
           children: [

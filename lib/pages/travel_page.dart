@@ -7,6 +7,7 @@ import 'package:demo7_pro/pages/travel_tab_page.dart';
 import 'package:demo7_pro/route/route_util.dart' show navTo;
 import 'package:demo7_pro/route/pages/html_editor_page/html_editor.dart'
     show HtmlEditorPageRoutes;
+import 'package:get/get.dart';
 
 class TravelPage extends StatefulWidget {
   @override
@@ -30,10 +31,8 @@ class _TravelPageState extends State<TravelPage> with TickerProviderStateMixin {
       setState(() {
         nowSltTab = _controller.index;
       });
-
     });
     _loadTabs();
-
   }
 
   @override
@@ -61,7 +60,7 @@ class _TravelPageState extends State<TravelPage> with TickerProviderStateMixin {
   Widget _floatBtn() {
     return FloatingActionButton(
       onPressed: () {
-        navTo(context, HtmlEditorPageRoutes.htmlEditorPage, clearStack: false);
+        Get.rootDelegate.toNamed('/htmlEdit');
       },
       heroTag: 'travel_page_btn',
       child: Icon(Icons.edit),

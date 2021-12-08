@@ -13,6 +13,7 @@ import 'package:demo7_pro/dao/search_dao.dart';
 import 'package:demo7_pro/model/search_model.dart';
 import 'package:logger/logger.dart';
 import 'dart:math';
+import 'package:get/get.dart';
 
 class SearchPage extends StatefulWidget {
   final bool hideLeft;
@@ -128,7 +129,7 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
                 speakClick: _jumpToSpeak,
                 autofocus: false,
                 leftButtonClick: () {
-                  Navigator.pop(context);
+                  Get.rootDelegate.popRoute(popMode: PopMode.History);
                 },
                 // onChanged: _textChange,
               ),
@@ -144,8 +145,8 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
     SearchModelItem item = searchModel.data[pos];
     return GestureDetector(
       onTap: () {
-        navTo(context, "${WebviewPageRoutes.webview}",
-            arguments: {"url": item.url, "title": '详情'});
+        Get.rootDelegate
+            .toNamed('/webview', arguments: {"url": item.url, "title": '详情'});
       },
       child: Container(
         padding: EdgeInsets.all(10),
@@ -180,7 +181,7 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
   }
 
   _jumpToSpeak() {
-    navTo(context, "${SpeakPageRoutes.speak}");
+    Get.rootDelegate.toNamed('/speak');
   }
 
   _typeImage(String type) {

@@ -6,6 +6,7 @@ import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:demo7_pro/route/pages/webview/index.dart'
     show WebviewPageRoutes;
 import 'package:demo7_pro/route/route_util.dart' show navTo;
+import 'package:get/get.dart';
 
 const PAGE_SIZE = 10;
 const _TRAVEL_URL = '';
@@ -150,7 +151,8 @@ class _TravelItem extends StatelessWidget {
     return GestureDetector(
       onTap: () {
         if (item.article.urls != null && item.article.urls.length > 0) {
-          navTo(context, "${WebviewPageRoutes.webview}", arguments: {
+
+          Get.rootDelegate.toNamed('/webview', arguments: {
             "url": item.article.urls[0].h5Url,
             "title": '详情',
           });
@@ -234,7 +236,7 @@ class _TravelItem extends StatelessWidget {
             clipBehavior: Clip.antiAlias,
             borderRadius: BorderRadius.circular(12),
             child: Image.network(
-              item.article.author?.coverImage?.dynamicUrl??'',
+              item.article.author?.coverImage?.dynamicUrl ?? '',
               width: 24,
               height: 24,
             ),

@@ -6,6 +6,7 @@ import 'package:demo7_pro/route/route_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:logger/logger.dart';
+import 'package:get/get.dart';
 
 /// 页面切换
 /// 需要编写RouteItem并且在route/routes.dart里注册页面路由
@@ -37,7 +38,8 @@ Future navTo(BuildContext context, String path,
 /// #### 接收参数
 /// `pop(context, result: ['one', 'two']);`
 void pop(BuildContext context, {dynamic result}) {
-  Navigator.of(context).pop(result);
+  // Navigator.of(context).pop(result);
+  Get.rootDelegate.popRoute(popMode: PopMode.History,result: result);
 }
 
 

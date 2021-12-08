@@ -4,6 +4,7 @@ import 'package:demo7_pro/plugin/asr_manager/asr_manager.dart';
 import 'package:demo7_pro/route/pages/search_page/index.dart'
     show SearchPageRoutes;
 import 'package:demo7_pro/route/route_util.dart' show navTo;
+import 'package:get/get.dart';
 
 class SpeakPage extends StatefulWidget {
   @override
@@ -142,7 +143,7 @@ class _SpeakPageState extends State<SpeakPage>
                     bottom: 20,
                     child: GestureDetector(
                       onTap: () {
-                        Navigator.pop(context);
+                        Get.rootDelegate.popRoute(popMode: PopMode.History);
                       },
                       child: Icon(
                         Icons.close,
@@ -169,10 +170,10 @@ class _SpeakPageState extends State<SpeakPage>
           speakResult = text;
         });
         //选关闭再跳转
-        Navigator.pop(context);
+        Get.rootDelegate.popRoute(popMode: PopMode.History);
 
-        navTo(context, "${SearchPageRoutes.search}",
-            arguments: {"keyword": speakResult});
+        Get.rootDelegate
+            .toNamed('/search', arguments: {"keyword": speakResult});
       }
     }).catchError((e) {
       print('识别出错---' + e.toString());

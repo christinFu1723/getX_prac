@@ -4,6 +4,7 @@ import 'package:demo7_pro/model/sales_box_model.dart';
 import 'package:demo7_pro/route/pages/webview/index.dart'
     show WebviewPageRoutes;
 import 'package:demo7_pro/route/route_util.dart' show navTo;
+import 'package:get/get.dart';
 
 class SalesBox extends StatelessWidget {
   final SalesBoxModel salesBox;
@@ -84,7 +85,7 @@ class SalesBox extends StatelessWidget {
     return Expanded(
         child: GestureDetector(
             onTap: () {
-              navTo(context, "${WebviewPageRoutes.webview}", arguments: {
+              Get.rootDelegate.toNamed('/webview', arguments: {
                 "url": model.url,
               });
             },
@@ -112,7 +113,7 @@ class SalesBox extends StatelessWidget {
   _wrapGesture(BuildContext context, Widget widget, String url, String title) {
     return GestureDetector(
       onTap: () {
-        navTo(context, "${WebviewPageRoutes.webview}", arguments: {
+        Get.rootDelegate.toNamed('/webview', arguments: {
           "url": url,
           "title": title,
         });

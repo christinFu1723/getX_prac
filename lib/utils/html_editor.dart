@@ -11,6 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:html_editor_enhanced/html_editor.dart';
 import 'package:html_character_entities/html_character_entities.dart';
+import 'package:get/get.dart';
 
 class HtmlEditorUtils {
   // 转换HTML 到后端编辑器格式 <input class="${variableNo} %{variable_type}" placeholder="variable_name" />
@@ -208,7 +209,8 @@ class HtmlEditorUtils {
           actions: <Widget>[
             TextButton(
               child: Text("取消"),
-              onPressed: () => Navigator.pop(context, null),
+              onPressed: () => Get.rootDelegate
+                  .popRoute(popMode: PopMode.History, result: null),
             ),
             TextButton(
               child: Text('确定'),
@@ -217,13 +219,16 @@ class HtmlEditorUtils {
                   AppUtil.showToast("请输入文档名称");
                   return;
                 }
-                Navigator.pop(context, textEditingController.text);
+                Get.rootDelegate.popRoute(
+                    popMode: PopMode.History,
+                    result: textEditingController.text);
               },
             ),
           ],
         ),
         onWillPop: () async {
-          Navigator.pop(context, null);
+          Get.rootDelegate.popRoute(popMode: PopMode.History, result: null);
+
           return true;
         },
       ),
@@ -433,7 +438,7 @@ class HtmlEditorUtils {
           actions: <Widget>[
             TextButton(
               child: Text("取消"),
-              onPressed: () => Navigator.pop(context, null),
+              onPressed: () =>  Get.rootDelegate.popRoute(popMode: PopMode.History,result: null),
             ),
             TextButton(
               child: Text('确定'),
@@ -444,13 +449,14 @@ class HtmlEditorUtils {
                 }
                 var variableName = textEditingController.text;
                 variable.variableName = variableName;
-                Navigator.pop(context, variable);
+
+                Get.rootDelegate.popRoute(popMode: PopMode.History,result:variable);
               },
             ),
           ],
         ),
         onWillPop: () async {
-          Navigator.pop(context, null);
+          Get.rootDelegate.popRoute(popMode: PopMode.History,result: null);
           return true;
         },
       ),

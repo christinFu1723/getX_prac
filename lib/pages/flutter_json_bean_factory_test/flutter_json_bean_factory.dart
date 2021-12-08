@@ -3,6 +3,7 @@ import 'package:demo7_pro/generated/json/base/json_convert_content.dart'
     show JsonConvert;
 
 import 'package:demo7_pro/json/test_entity.dart' show TestEntity;
+import 'package:get/get.dart';
 
 class FlutterJsonBeanFactoryPage extends StatefulWidget {
   @override
@@ -16,7 +17,7 @@ class _FlutterJsonBeanFactoryState extends State<FlutterJsonBeanFactoryPage> {
 
   TestEntity testPersionObject2;
 
-  Map<String,dynamic> jsonTestVal;
+  Map<String, dynamic> jsonTestVal;
 
   @override
   void initState() {
@@ -26,15 +27,20 @@ class _FlutterJsonBeanFactoryState extends State<FlutterJsonBeanFactoryPage> {
     testPersionObject2 = JsonConvert.fromJsonAsT(testPersion); // 调用static 类方法
 
     jsonTestVal = testPersionObject.toJson();
-    setState(() {
-
-    });
+    setState(() {});
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text('测试flutter_Json_bean'),
+        leading: BackButton(
+            color: Colors.white,
+            onPressed: () =>
+                Get.rootDelegate.popRoute(popMode: PopMode.History)),
+      ),
       body: Column(children: [
         Text('测试FlutterJsonBeanFactory'),
         Text('先把测试数据转化为flutter class object,查看object.name:'),

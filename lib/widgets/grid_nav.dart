@@ -5,6 +5,7 @@ import 'package:demo7_pro/model/grid_nav_model.dart';
 import 'package:demo7_pro/route/pages/webview/index.dart'
     show WebviewPageRoutes;
 import 'package:demo7_pro/route/route_util.dart' show navTo;
+import 'package:get/get.dart';
 
 class GridNav extends StatelessWidget {
   final GridNavModel gridNavModel;
@@ -135,7 +136,8 @@ class GridNav extends StatelessWidget {
   _wrapGesture(BuildContext context, Widget widget, CommonModel model) {
     return GestureDetector(
       onTap: () {
-        navTo(context, "${WebviewPageRoutes.webview}", arguments: {
+
+        Get.rootDelegate.toNamed('/webview', arguments: {
           "url": model.url,
           "statusBar": model.statusBarColor,
           "hideAppBar": model.hideAppBar,

@@ -3,6 +3,7 @@ import 'package:demo7_pro/model/common_model.dart';
 import 'package:demo7_pro/route/pages/webview/index.dart'
     show WebviewPageRoutes;
 import 'package:demo7_pro/route/route_util.dart' show navTo;
+import 'package:get/get.dart';
 
 class LocalNav extends StatelessWidget {
   final List<CommonModel> localNavList;
@@ -37,10 +38,12 @@ class LocalNav extends StatelessWidget {
   Widget _item(BuildContext context, CommonModel model) {
     return GestureDetector(
         onTap: () {
-          navTo(context, "${WebviewPageRoutes.webview}", arguments: {
+
+          Get.rootDelegate.toNamed('/webview', arguments: {
             "url": model.url,
             "statusBar": model.statusBarColor,
             "hideAppBar": model.hideAppBar,
+
           });
         },
         child: Column(

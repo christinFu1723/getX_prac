@@ -5,6 +5,7 @@ import 'package:demo7_pro/widgets/button.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:get/get.dart';
 
 /// 针对不同平台展示对应的 actionSheet 组件
 ///
@@ -198,7 +199,7 @@ class AppBottomSheet {
         color: AppTheme.borderColor,
         textColor: AppTheme.secondTextColor,
         onPressed: () {
-          Navigator.pop(context);
+          Get.rootDelegate.popRoute(popMode: PopMode.History);
         },
       ),
     );
@@ -231,7 +232,7 @@ class AppBottomSheet {
       cancelButton: CupertinoActionSheetAction(
         child: Text('取消'),
         onPressed: () {
-          Navigator.pop(context);
+          Get.rootDelegate.popRoute(popMode: PopMode.History);
         },
       ),
     );
@@ -240,7 +241,8 @@ class AppBottomSheet {
   /// 选择回调
   void handleChangeItem(AppActionSheetRow row) {
     if (row.disabled) return;
-    Navigator.pop(context, row.value ?? row.label);
+    Get.rootDelegate.popRoute(popMode: PopMode.History,result: row.value ?? row.label);
+
   }
 }
 

@@ -20,6 +20,7 @@ import 'package:demo7_pro/route/routes.dart' show Routes;
 import 'package:demo7_pro/route/route_util.dart' show navTo;
 import 'package:demo7_pro/utils/data_line/mult_data_line.dart';
 import 'dart:math';
+import 'package:get/get.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -325,7 +326,7 @@ class _LoginPageState extends State<LoginPage> with MultDataLine {
         await AppService.setToken(
             'Bearer ${loginInJson['tokenInfo']['access_token']}');
         await PrefersUtil.set("userInfo", json.encode(loginInJson));
-        navTo(context, '${Routes.root}', replace: true);
+        Get.rootDelegate.offNamed('/');
       }
       return true;
     } catch (e) {

@@ -16,6 +16,7 @@ import 'package:demo7_pro/route/route_util.dart' show navTo;
 import 'package:demo7_pro/route/pages/login_page/index.dart'
     show LoginPageRoutes;
 import 'package:dio_log/dio_log.dart';
+import 'package:get/get.dart';
 
 class TabNavigator extends StatefulWidget {
   @override
@@ -46,24 +47,23 @@ class _TabNavigatorState extends State<TabNavigator> {
     init();
 
     super.initState();
-
   }
 
   void init() async {
     /// 初始化应用状态
-    await AppService.start(context);
+    await AppService.start();
   }
 
   Future<void> needLogin() async {
-    await AppService.clearPrefers(context);
+    await AppService.clearPrefers();
     Logger().i('检查到需要跳转登录页');
 
+
     /// 转到登录页
-    navTo(context, "${LoginPageRoutes.login}", clearStack: true);
+    Get.rootDelegate.offNamed('/login');
   }
 
   Widget build(BuildContext context) {
-
     return Scaffold(
       body: IndexedStack(
         index: _currentIndex,

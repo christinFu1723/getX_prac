@@ -16,7 +16,7 @@ import 'package:demo7_pro/route/pages/cashier/index.dart' show CashierRoutes;
 import 'package:demo7_pro/route/pages/FlutterJsonBeanFactoryPage/index.dart' show FlutterJsonBeanFactoryPageRoutes;
 import 'package:demo7_pro/route/route_util.dart' show navTo;
 import 'package:demo7_pro/route/pages/login_page/index.dart' show LoginPageRoutes;
-
+import 'package:get/get.dart';
 
 
 class MyPage extends StatefulWidget {
@@ -135,7 +135,8 @@ class _MyPageState extends State<MyPage> {
                         borderWidth: 8,
                         borderColor: Color.fromARGB(30, 0, 179, 191)),
                     onTap: () {
-                      navTo(context, "${FilterPageRoutes.filter}");
+
+                      Get.rootDelegate.toNamed('/filter');
                     },
                   )),
               Positioned(
@@ -210,16 +211,19 @@ class _MyPageState extends State<MyPage> {
   }
 
   _loginAndClear() async {
-    await AppService.clearPrefers(context);
+    await AppService.clearPrefers();
     EventBusUtil.instance.eventBus.fire(NeedReLoginEvent());
-    // navTo(context, "${LoginPageRoutes.login}",clearStack:true);
+
   }
 
   _jumpToCashierPage() {
-    navTo(context, CashierRoutes.cashier, clearStack: false);
+
+    Get.rootDelegate.toNamed('/cashier');
   }
 
+
   _jumpToFlutterJSONBeanPage(){
-    navTo(context, FlutterJsonBeanFactoryPageRoutes.futterJsonBeanFactoryPage, clearStack: false);
+
+    Get.rootDelegate.toNamed('/flutterJsonBeanFactory');
   }
 }

@@ -6,9 +6,6 @@ import 'package:demo7_pro/widgets/sales_box.dart';
 import 'package:demo7_pro/widgets/loading_container.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:demo7_pro/widgets/search_bar.dart';
-import 'package:demo7_pro/route/pages/webview/index.dart'
-    show WebviewPageRoutes;
-import 'package:demo7_pro/route/route_util.dart' show navTo;
 import 'package:dio_log/dio_log.dart';
 import 'package:get/get.dart';
 import 'package:demo7_pro/pages/home_page/controllers/home_controller.dart';
@@ -16,7 +13,7 @@ import 'package:demo7_pro/pages/home_page/controllers/home_controller.dart';
 class MyHomePage extends GetView<HomeController> {
   @override
   Widget build(BuildContext context) {
-    print('查看是否不停在渲染');
+    print('首页，查看是否不停在渲染');
     showDebugBtn(context, btnColor: Colors.blue);
 
     return Scaffold(
@@ -157,35 +154,26 @@ class MyHomePage extends GetView<HomeController> {
   _wrapGesture(BuildContext context, Widget widget, String url, String title) {
     return GestureDetector(
       onTap: () {
-        navTo(context, "${WebviewPageRoutes.webview}",
-            clearStack: false,
-            arguments: {
-              "url": url,
-              "title": title,
-            });
+        Get.rootDelegate.toNamed('/webview', arguments: {
+          "url": url,
+          "title": title,
+        });
       },
       child: widget,
     );
   }
 
   _jumpToSubmitPage() {
-    // navTo(context, SubmitPageRoutes.submit, clearStack: false);
     Get.rootDelegate.toNamed('/submit');
   }
 
   _jumpToSearch() {
-    // navTo(context, "${SearchPageRoutes.search}?hideLeft=${false}",
-    //     clearStack: false,
-    //     arguments: {
-    //       "hint": SEARCH_BAR_DEFAULT_TEXT,
-    //     });
     Get.rootDelegate.toNamed("/tabbar/search?hideLeft=${false}", arguments: {
       "hint": controller.searchBarDefaultTitle,
     });
   }
 
   _jumpToSpeak() {
-    // navTo(context, SpeakPageRoutes.speak, clearStack: false);
     Get.rootDelegate.toNamed('/speak');
   }
 }

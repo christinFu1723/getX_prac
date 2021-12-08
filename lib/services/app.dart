@@ -26,6 +26,7 @@ import 'package:demo7_pro/widgets/apk_install.dart';
 import 'package:install_plugin/install_plugin.dart';
 
 import 'package:url_launcher/url_launcher.dart';
+import 'package:get/get.dart';
 
 
 import 'package:demo7_pro/route/route_util.dart' show navTo;
@@ -33,6 +34,7 @@ import 'package:demo7_pro/route/pages/login_page/index.dart' show LoginPageRoute
 import 'package:demo7_pro/utils/event_bus.dart';
 import 'package:demo7_pro/eventBus/app.dart' show NeedReLoginEvent;
 import 'package:demo7_pro/route/route_util.dart' show pop;
+import 'package:get/get.dart';
 
 
 class AppService {
@@ -56,14 +58,14 @@ class AppService {
   /// String identity：已登录用户对应的身份信息
   /// List<String> keywords：已登录用户的历史搜索记录
 
-  static Future<EnumUserType> start(BuildContext context) async {
+  static Future<EnumUserType> start() async {
     try {
       /// 权限初始化
       requestPermission();
 
       var token = await getToken();
       if(token==null){
-        await clearPrefers(context);
+        await clearPrefers();
         EventBusUtil.instance.eventBus.fire(NeedReLoginEvent());
         return null;
       }
@@ -89,10 +91,9 @@ class AppService {
   }
 
   /// 清除用户登录信息
-  static Future<void> clearPrefers(BuildContext context) async {
+  static Future<void> clearPrefers() async {
     await Future.wait(<Future<dynamic>>[
       PrefersUtil.remove("keywords"),
-      PersonalService.resetUnreadCount(context),
       PersonalService.clearUser(),
       clearExpire(),
       clearToken(),
@@ -237,7 +238,8 @@ class AppService {
               return ApkInstall(
                 detail.appUrl,
                 onSuccess: () {
-                  pop(context);
+
+                  Get.rootDelegate.popRoute(popMode: PopMode.History);
                 },
               );
             },
@@ -276,7 +278,7 @@ class AppService {
     );
     if (personalStoreModel.user == null) {
 
-      navTo(context, "${LoginPageRoutes.login}",clearStack:true);
+      Get.rootDelegate.offNamed('/login');
       return;
     }
     callback.call();
@@ -329,7 +331,7 @@ class AppService {
       // await ApiAuth.logout();
 
       /// 清除缓存
-      await clearPrefers(context);
+      await clearPrefers();
 
       /// 清除状态
       PersonalService.clearUserStore(context);
@@ -338,7 +340,8 @@ class AppService {
       AppUtil.showToast('已退出登录');
 
       /// 转到登录页
-      navTo(context, "${LoginPageRoutes.login}",clearStack:true);
+
+      Get.rootDelegate.offNamed('/login');
     } catch (e) {
       AppUtil.showToast(e);
     } finally {

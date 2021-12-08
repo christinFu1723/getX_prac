@@ -6,6 +6,7 @@ import 'package:logger/logger.dart' show Logger;
 import 'package:demo7_pro/widgets/common/input.dart' show InputForm;
 import 'package:demo7_pro/widgets/common/input_plate.dart' show InputPlate;
 import 'package:demo7_pro/route/route_util.dart' show pop;
+import 'package:get/get.dart';
 
 class FilterPage extends StatefulWidget {
   @override
@@ -143,7 +144,8 @@ class _FilterPageState extends State<FilterPage> {
         color: AppTheme.secondColor,
       ),
       onTap: () {
-        pop(context);
+        // pop(context);
+        Get.rootDelegate.popRoute(popMode: PopMode.History);
       },
     );
   }

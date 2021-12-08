@@ -11,6 +11,7 @@ import 'package:demo7_pro/pages/submit_page/widgets/package_choose.dart'
 import 'package:logger/logger.dart';
 import 'package:demo7_pro/dto/company_info.dart' show CompanyInfo;
 import 'package:demo7_pro/route/route_util.dart' show pop;
+import 'package:get/get.dart';
 
 class SubmitPage extends StatefulWidget {
   @override
@@ -57,7 +58,8 @@ class _SubmitPageState extends State<SubmitPage> with TickerProviderStateMixin {
               forceElevated: true,
               leading: GestureDetector(
                 onTap: () {
-                  pop(context);
+                  // pop(context);
+                  Get.rootDelegate.popRoute(popMode: PopMode.History);
                 },
                 child: Icon(
                   Icons.arrow_back_ios,

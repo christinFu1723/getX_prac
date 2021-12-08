@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
 import 'dart:async';
+import 'package:get/get.dart';
+
+
 const Catch_urls = ['m.ctrip.com/','m.ctrip.com/html5/','m.ctrip.com/html5']; // 白名单
 
 class WebView extends StatefulWidget {
@@ -40,7 +43,8 @@ class _WebViewState extends State<WebView>{
               // 禁止返回
               webviewReference.launch(widget.url);
             } else{
-              Navigator.pop(context);
+
+              Get.rootDelegate.popRoute(popMode: PopMode.History);
               exiting = true; // 禁止重复返回
             }
           }
@@ -117,7 +121,7 @@ class _WebViewState extends State<WebView>{
             children: [
               GestureDetector(
                 onTap:(){
-                  Navigator.pop(context);
+                  Get.rootDelegate.popRoute(popMode: PopMode.History);
                 },
                 child: Container(
                   margin:EdgeInsets.only(left: 10),
