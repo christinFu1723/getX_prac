@@ -1,27 +1,9 @@
 import 'package:flutter/material.dart';
 
-// import 'package:demo7_pro/pages/home_page.dart';
-// import 'package:demo7_pro/pages/my_page.dart';
-// import 'package:demo7_pro/pages/search_page.dart';
-// import 'package:demo7_pro/pages/travel_page.dart';
-// import 'package:demo7_pro/pages/login_page.dart';
-// import 'package:demo7_pro/utils/app.dart';
-import 'package:demo7_pro/eventBus/app.dart';
-import 'dart:async';
-import 'package:demo7_pro/utils/event_bus.dart';
-import 'package:demo7_pro/services/app.dart';
-import 'package:logger/logger.dart';
 import 'package:demo7_pro/route/tabbar/tabbar.dart' show TabConfig;
-import 'package:demo7_pro/route/route_util.dart' show navTo;
-import 'package:demo7_pro/route/pages/login_page/index.dart'
-    show LoginPageRoutes;
-import 'package:dio_log/dio_log.dart';
+
 import 'package:get/get.dart';
 
-// class TabNavigator extends StatefulWidget {
-//   @override
-//   _TabNavigatorState createState() => _TabNavigatorState();
-// }
 class TabbarController extends GetxController {}
 
 class TabbarBinding extends Bindings {
@@ -49,7 +31,6 @@ class TabNavigatorGet extends GetView<TabbarController> {
           currentIndex = 0;
         }
         if (currentLocation?.startsWith('/tabbar/search') == true) {
-          print('dsdssd1111');
           currentIndex = 1;
         }
         if (currentLocation?.startsWith('/tabbar/travel') == true) {
@@ -59,15 +40,12 @@ class TabNavigatorGet extends GetView<TabbarController> {
           currentIndex = 3;
         }
 
-        if (currentLocation?.startsWith('/tabbar/myTest') == true) {
-          print('sdhdshds112121');
-          currentIndex = 4;
-        }
         return Scaffold(
           body: GetRouterOutlet(
             initialRoute: '/tabbar/home',
           ),
           bottomNavigationBar: BottomNavigationBar(
+            type: BottomNavigationBarType.fixed,
             currentIndex: currentIndex,
             onTap: (value) {
               switch (value) {
@@ -75,7 +53,6 @@ class TabNavigatorGet extends GetView<TabbarController> {
                   delegate.toNamed('/tabbar/home');
                   break;
                 case 1:
-                  print('dsjhsdhjdsh');
                   delegate.toNamed('/tabbar/search');
                   break;
                 case 2:
@@ -84,9 +61,7 @@ class TabNavigatorGet extends GetView<TabbarController> {
                 case 3:
                   delegate.toNamed('/tabbar/my');
                   break;
-                case 4:
-                  delegate.toNamed('/tabbar/myTest');
-                  break;
+
                 default:
               }
             },
@@ -95,7 +70,6 @@ class TabNavigatorGet extends GetView<TabbarController> {
               _bottomItem('搜索', Icons.search, 1, currentIndex),
               _bottomItem('旅拍', Icons.camera, 2, currentIndex),
               _bottomItem('我的', Icons.account_circle, 3, currentIndex),
-              _bottomItem('首页测试getX', Icons.home, 4, currentIndex),
             ],
           ),
         );

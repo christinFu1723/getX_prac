@@ -1,5 +1,5 @@
 import 'package:demo7_pro/route/router_item.dart' show RouteItem;
-import 'package:demo7_pro/pages/home_page.dart' show MyHomePage;
+import 'package:demo7_pro/pages/home_page/views/home_page.dart' show MyHomePage;
 
 // 路由定义
 class HomePageRoutes {

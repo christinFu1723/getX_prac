@@ -33,7 +33,9 @@ class SalesBox extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Image.network(salesBox.icon, height: 15, fit: BoxFit.fill),
+              salesBox?.icon != null
+                  ? Image.network(salesBox.icon, height: 15, fit: BoxFit.fill)
+                  : Container(),
               // ImageNetwork(imageUrl:salesBox.icon,height: 15,fit:BoxFit.fill),
               Container(
                   padding: EdgeInsets.fromLTRB(10, 1, 8, 1),
@@ -91,12 +93,14 @@ class SalesBox extends StatelessWidget {
                   border: Border(
                       right: left ? borderSide : BorderSide.none,
                       bottom: last ? BorderSide.none : borderSide)),
-              child: Image.network(
-                model.icon,
-                width: MediaQuery.of(context).size.width / 2 - 10,
-                height: big ? 129 : 80,
-                fit: BoxFit.fill,
-              ),
+              child: model?.icon != null
+                  ? Image.network(
+                      model?.icon ?? '',
+                      width: MediaQuery.of(context).size.width / 2 - 10,
+                      height: big ? 129 : 80,
+                      fit: BoxFit.fill,
+                    )
+                  : Container(),
               // ImageNetwork(imageUrl:model.icon,width: MediaQuery.of(context).size.width /2 -10,height: big?129:80,fit:BoxFit.fill),
               // Padding(padding:
               // EdgeInsets.only(top:3),
