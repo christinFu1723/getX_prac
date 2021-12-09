@@ -1,7 +1,7 @@
 import 'package:demo7_pro/route/router_item.dart' show RouteItem;
 import 'package:fluro/fluro.dart' show Handler;
 import 'package:flutter/material.dart';
-import 'package:demo7_pro/widgets/webview.dart' show WebView;
+import 'package:demo7_pro/pages/webview_page/views/webview.dart' show WebView;
 
 
 // 路由定义
@@ -23,7 +23,7 @@ class WebviewPageRoutes {
         final bool hideAppBar= args["hideAppBar"];
         final bool backForbid= args["backForbid"];
 
-        return WebView(url: url, statusBar: statusBar,title:title,hideAppBar:hideAppBar,backForbid:backForbid);
+        return WebView();
       })),
     ];
     return _routes;

@@ -6,9 +6,9 @@ import 'dart:async';
 import 'package:demo7_pro/utils/app.dart';
 import 'package:demo7_pro/utils/validate.dart';
 import 'package:demo7_pro/dao/login/login.dart';
-import 'package:demo7_pro/dao/login/sms.dart';
 import 'package:demo7_pro/utils/string.dart';
 import 'package:demo7_pro/utils/prefers.dart';
+import 'package:demo7_pro/dao/login/sms.dart';
 import 'dart:convert';
 
 class LoginController extends GetxController {
@@ -50,6 +50,7 @@ class LoginController extends GetxController {
   Future<bool> handleLogin() async {
     try {
       focusNodeMobile.unfocus();
+      focusNodeVerifyCode.unfocus();
 
       /// 手机号验证
       if (StringUtil.isEmpty(form.value.mobile)) throw '请填写手机号';
@@ -97,8 +98,10 @@ class LoginController extends GetxController {
       /// 手机号验证
       if (StringUtil.isEmpty(form.value.mobile)) throw '请填写手机号';
       if (!ValidateUtil.isMobile(form.value.mobile)) throw '请填写正确的手机号';
-      // await SMSRequest.fetch(form.value.mobile);
+      await SMSRequest.fetch(form.value.mobile);
       AppUtil.showToast('短信验证码发送成功');
+      focusNodeMobile.unfocus();
+      focusNodeVerifyCode.unfocus();
       _initTimer();
     } catch (e) {
       AppUtil.showToast(e);

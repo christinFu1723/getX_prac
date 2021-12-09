@@ -4,7 +4,8 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:demo7_pro/tabbar/tab_nav_get/views/tab_nav_get.dart';
 import 'package:demo7_pro/tabbar/tab_nav_get/bindings/tab_nav_get_binding.dart';
 import 'package:get/get.dart';
-import 'package:demo7_pro/widgets/webview.dart'; // webview
+import 'package:demo7_pro/pages/webview_page/views/webview.dart'; // webview
+import 'package:demo7_pro/pages/webview_page/bindings/webview_binding.dart'; // webview bindings
 import 'package:demo7_pro/pages/home_page/views/home_page.dart'; // 首页
 import 'package:demo7_pro/pages/home_page/bindings/home_binding.dart'; // 首页 binding
 import 'package:demo7_pro/pages/my_page.dart'; // 我的
@@ -21,7 +22,6 @@ import 'package:demo7_pro/pages/submit_page/submit_page.dart'; // 畅捷签提�
 import 'package:demo7_pro/pages/root/views/root_view.dart'; // 根路径页面
 import 'package:demo7_pro/pages/root/bindings/root_binding.dart'; // 根路径页面binding
 import 'package:demo7_pro/middleware/auth_middleware.dart'; // 认证登录中间件
-
 
 class AppGET extends StatefulWidget {
   @override
@@ -99,7 +99,10 @@ class _AppState extends State<AppGET> {
               // 语音识别页面
               GetPage(name: '/submit', page: () => SubmitPage()),
               // 提交表单页面
-              GetPage(name: '/webview', page: () => WebView()),
+              GetPage(
+                  name: '/webview',
+                  page: () => WebView(),
+                  bindings: [WebviewBinding()]),
               // webview页面
               GetPage(name: '/filter', page: () => FilterPage()),
               // 过滤器页面，含车牌键盘

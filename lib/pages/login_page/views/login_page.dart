@@ -1,13 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:demo7_pro/config/theme.dart';
 import 'package:flutter/services.dart';
-
 import 'package:demo7_pro/widgets/version.dart';
-
 import 'package:demo7_pro/widgets/swiper_button.dart';
-
 import 'package:demo7_pro/pages/login_page/controllers/login_controller.dart';
-
 import 'package:get/get.dart';
 
 class LoginPage extends GetView<LoginController> {
@@ -44,17 +40,23 @@ class LoginPage extends GetView<LoginController> {
   }
 
   Widget _swiperButtonCtn() {
-    return Padding(
-      padding: EdgeInsets.fromLTRB(60, 58, 60, 22),
-      child: SwiperButton(
-        size: 40,
-        placeholder: '滑动进入下一步',
-        onSwiperStart: () {
-          // 手机号输入失去焦点
-          controller.focusNodeMobile.unfocus();
-        },
-        onSwiperValidate: controller.handleLogin,
+    return GestureDetector(
+      child: Padding(
+        padding: EdgeInsets.fromLTRB(60, 58, 60, 22),
+        child: SwiperButton(
+          size: 40,
+          placeholder: '滑动进入下一步',
+          onSwiperStart: () {
+            // 手机号输入失去焦点
+            controller.focusNodeMobile.unfocus();
+          },
+          onSwiperValidate: controller.handleLogin,
+        ),
       ),
+      onTap: () {
+        controller.focusNodeMobile.unfocus();
+        controller.focusNodeVerifyCode.unfocus();
+      },
     );
   }
 
@@ -64,6 +66,7 @@ class LoginPage extends GetView<LoginController> {
         Padding(
           padding: EdgeInsets.fromLTRB(17, 58, 17, 22),
           child: _loginSpecialInput(Icons.person,
+              focusNode: controller.focusNodeMobile,
               hint: '请填写您的手机号',
               maxLength: 11,
               controller: controller.phoneNumbController, onChange: (val) {
@@ -78,6 +81,7 @@ class LoginPage extends GetView<LoginController> {
           child: _loginSpecialInput(Icons.verified_user,
               showClear: true,
               showSmsBtn: true,
+              focusNode: controller.focusNodeVerifyCode,
               context: context,
               maxLength: 6,
               hint: '请填写手机验证码',
@@ -100,6 +104,7 @@ class LoginPage extends GetView<LoginController> {
       showClear = true,
       showSmsBtn = false,
       maxLength = 10,
+      FocusNode focusNode,
       hint = '请填写'}) {
     return ClipRRect(
         borderRadius: BorderRadius.all(Radius.circular(6)),
@@ -115,6 +120,7 @@ class LoginPage extends GetView<LoginController> {
               ),
               Expanded(
                   child: TextField(
+                focusNode: focusNode,
                 controller: controller,
                 textAlign: TextAlign.left,
                 cursorColor: Get.context.theme.primaryColor,
@@ -154,7 +160,6 @@ class LoginPage extends GetView<LoginController> {
   }
 
   Widget _smsButton() {
-
     return Padding(
         padding: EdgeInsets.only(left: 10),
         child: Obx(() => ElevatedButton(

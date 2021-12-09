@@ -62,6 +62,10 @@
 	<true/>
 	<key>NSAppleMusicUsageDescription</key>
 	<string>是否允许App访问您的媒体资料库</string>
+	<key>NSBonjourServices</key>
+	<array>
+		<string>_dartobservatory._tcp</string>
+	</array>
 	<key>NSCameraUsageDescription</key>
 	<string>请允许APP访问您的相机</string>
 	<key>NSMicrophoneUsageDescription</key>
