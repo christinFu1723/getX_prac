@@ -1,5 +1,5 @@
 import 'package:demo7_pro/route/router_item.dart' show RouteItem;
-import 'package:demo7_pro/pages/login_page.dart' show LoginPage;
+import 'package:demo7_pro/pages/login_page/views/login_page.dart' show LoginPage;
 
 // 路由定义
 class LoginPageRoutes {

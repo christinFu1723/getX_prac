@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:demo7_pro/eventBus/app.dart';
 import 'dart:async';
 import 'package:demo7_pro/utils/event_bus.dart';
-import 'package:demo7_pro/pages/login_page.dart';
+import 'package:demo7_pro/pages/login_page/views/login_page.dart';
 import 'package:demo7_pro/services/app.dart';
 import 'package:demo7_pro/utils/app.dart';
 import 'package:logger/logger.dart';

@@ -10,16 +10,18 @@ import 'package:demo7_pro/pages/home_page/bindings/home_binding.dart'; // 首页
 import 'package:demo7_pro/pages/my_page.dart'; // 我的
 import 'package:demo7_pro/pages/search_page.dart'; // 搜索页
 import 'package:demo7_pro/pages/travel_page.dart'; // 旅行页
-import 'package:demo7_pro/pages/login_page.dart'; // 登录页
+import 'package:demo7_pro/pages/login_page/views/login_page.dart'; // 登录页
+import 'package:demo7_pro/pages/login_page/bindings/login_binding.dart'; // 登录页binding
 import 'package:demo7_pro/pages/speak_page.dart'; // 语音页
 import 'package:demo7_pro/pages/cashier/cashier.dart'; // 收款页
 import 'package:demo7_pro/pages/filter_page/filter_page.dart'; // 筛选页
 import 'package:demo7_pro/pages/flutter_json_bean_factory_test/flutter_json_bean_factory.dart'; // flutter_json_bean页面
 import 'package:demo7_pro/pages/html_editor_page/html_editor.dart'; // html editor页面
 import 'package:demo7_pro/pages/submit_page/submit_page.dart'; // 畅捷签提交页面
-import 'package:demo7_pro/pages/root/views/root_view.dart';
-import 'package:demo7_pro/pages/root/bindings/root_binding.dart';
+import 'package:demo7_pro/pages/root/views/root_view.dart'; // 根路径页面
+import 'package:demo7_pro/pages/root/bindings/root_binding.dart'; // 根路径页面binding
 import 'package:demo7_pro/middleware/auth_middleware.dart'; // 认证登录中间件
+
 
 class AppGET extends StatefulWidget {
   @override
@@ -46,6 +48,11 @@ class _AppState extends State<AppGET> {
         const Locale('zh', 'CH'),
         const Locale('en', 'US'), // English
       ],
+      navigatorObservers: [BotToastNavigatorObserver()],
+      builder: (BuildContext context, Widget child) {
+        child = botToastBuilder(context, child);
+        return child;
+      },
       getPages: [
         GetPage(
             name: '/',
@@ -78,9 +85,15 @@ class _AppState extends State<AppGET> {
                     GetPage(
                         name: '/travel',
                         page: () => TravelPage()), // tabbar页面 - 旅行页面
-                    GetPage(name: '/my', page: () => MyPage()), // tabbar页面 - 我的
+                    GetPage(
+                      name: '/my',
+                      page: () => MyPage(),
+                    ), // tabbar页面 - 我的
                   ]),
-              GetPage(name: '/login', page: () => LoginPage()),
+              GetPage(
+                  name: '/login',
+                  page: () => LoginPage(),
+                  bindings: [LoginBinding()]),
               // 登录页面
               GetPage(name: '/speak', page: () => SpeakPage()),
               // 语音识别页面
