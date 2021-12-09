@@ -56,17 +56,22 @@ class WebviewController extends GetxController {
     });
     _onHttpError =
         webviewReference.onHttpError.listen((WebViewHttpError error) {
-      print(error);
+      print('webview报错：$error');
     });
     super.onInit();
   }
 
   @override
   void onClose() {
+
     _onHttpError.cancel();
+
     _onUrlChanged.cancel();
+
     _onStateChanged.cancel();
+
     webviewReference.dispose();
+
     super.onClose();
   }
 

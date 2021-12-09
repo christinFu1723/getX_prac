@@ -60,8 +60,14 @@
 	<true/>
 	<key>LSSupportsOpeningDocumentsInPlace</key>
 	<true/>
+	<key>NSAllowsArbitraryLoads</key>
+	<string>true</string>
+	<key>NSAllowsArbitraryLoadsInWebContent</key>
+	<string>true</string>
 	<key>NSAppleMusicUsageDescription</key>
 	<string>是否允许App访问您的媒体资料库</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>是否允许App访问您的位置</string>
 	<key>NSBonjourServices</key>
 	<array>
 		<string>_dartobservatory._tcp</string>
