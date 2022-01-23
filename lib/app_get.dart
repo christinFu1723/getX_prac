@@ -10,7 +10,8 @@ import 'package:demo7_pro/pages/home_page/views/home_page.dart'; // 首页
 import 'package:demo7_pro/pages/home_page/bindings/home_binding.dart'; // 首页 binding
 import 'package:demo7_pro/pages/my_page.dart'; // 我的
 import 'package:demo7_pro/pages/search_page.dart'; // 搜索页
-import 'package:demo7_pro/pages/travel_page.dart'; // 旅行页
+import 'package:demo7_pro/pages/travel_page/views/travel_page.dart'; // 旅行页
+import 'package:demo7_pro/pages/travel_page/bindings/travel_binding.dart'; // 旅行页 binding
 import 'package:demo7_pro/pages/login_page/views/login_page.dart'; // 登录页
 import 'package:demo7_pro/pages/login_page/bindings/login_binding.dart'; // 登录页binding
 import 'package:demo7_pro/pages/speak_page.dart'; // 语音页
@@ -21,6 +22,8 @@ import 'package:demo7_pro/pages/html_editor_page/html_editor.dart'; // html edit
 import 'package:demo7_pro/pages/submit_page/submit_page.dart'; // 畅捷签提交页面
 import 'package:demo7_pro/pages/root/views/root_view.dart'; // 根路径页面
 import 'package:demo7_pro/pages/root/bindings/root_binding.dart'; // 根路径页面binding
+import 'package:demo7_pro/pages/search_company/views/search_company_page.dart'; // 搜索企业页面
+import 'package:demo7_pro/pages/search_company/bindings/search_company_binding.dart'; // 搜索企业页面binding
 import 'package:demo7_pro/middleware/auth_middleware.dart'; // 认证登录中间件
 
 class AppGET extends StatefulWidget {
@@ -83,8 +86,15 @@ class _AppState extends State<AppGET> {
                         name: '/search',
                         page: () => SearchPage()), // tabbar页面 - 搜索页
                     GetPage(
-                        name: '/travel',
-                        page: () => TravelPage()), // tabbar页面 - 旅行页面
+                        name: '/search-company',
+                        page: () => SearchCompanyPage(),
+                        bindings: [SearchCompanyBinding()]), // tabbar页面 - 首页
+                    GetPage(
+                      name: '/travel',
+                      page: () => TravelPage(),
+                      bindings: [TravelBinding()], // tabbar页面 - 首页
+                    ), // tabbar页面 - 旅行页面
+
                     GetPage(
                       name: '/my',
                       page: () => MyPage(),

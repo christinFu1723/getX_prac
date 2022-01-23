@@ -3,9 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:demo7_pro/model/travel_model.dart';
 import 'package:demo7_pro/dao/travel_dao.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:demo7_pro/route/pages/webview/index.dart'
-    show WebviewPageRoutes;
-import 'package:demo7_pro/route/route_util.dart' show navTo;
 import 'package:get/get.dart';
 
 const PAGE_SIZE = 10;
@@ -43,6 +40,8 @@ class _TravelTabPageState extends State<TravelTabPage>
     // if(widget.nowSltTab==widget.tabsIndex){
     //   _loadData();
     // }
+
+    print('查看渲染了吗');
     _loadData();
 
     _scrollController.addListener(() {

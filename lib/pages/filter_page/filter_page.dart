@@ -1,4 +1,3 @@
-import 'package:demo7_pro/app.dart';
 import 'package:demo7_pro/utils/app.dart';
 import 'package:flutter/material.dart';
 import 'package:demo7_pro/config/theme.dart' show AppTheme;
