@@ -14,6 +14,8 @@ class InputForm extends StatefulWidget {
   final String initVal;
   final TextAlign textAlign;
   final bool enabled;
+  final InputDecoration inputDecoration;
+  final bool isCollapsed;
 
   InputForm(
       {Key key,
@@ -27,7 +29,9 @@ class InputForm extends StatefulWidget {
       this.maxLength,
       this.readOnly,
       this.keyboardType,
-      this.initVal = ''});
+      this.initVal = '',
+      this.inputDecoration,
+      this.isCollapsed});
 
   @override
   _InputFormState createState() => _InputFormState();
@@ -55,27 +59,29 @@ class _InputFormState extends State<InputForm> {
         keyboardType: widget.keyboardType ?? TextInputType.text,
         readOnly: widget.readOnly ?? false,
         style: TextStyle(
-            color: widget.readOnly?? false
+            color: widget.readOnly ?? false
                 ? AppTheme.placeholderColor
                 : AppTheme.titleColor),
-        decoration: InputDecoration(
-          errorText: '',
-          // 不显示错误提示
-          errorStyle: TextStyle(color: Colors.transparent, height: 0),
-          // 不显示错误提示
-          counterText: "",
-          // 不显示输入框最大字数统计
-          border: InputBorder.none,
-          labelStyle: TextStyle(
-              color: widget.readOnly?? false
-                  ? AppTheme.placeholderColor
-                  : AppTheme.titleColor),
-          hintText: widget.hintStr,
-          hintStyle: TextStyle(
-              color: AppTheme.placeholderColor,
-              fontSize: AppTheme.fontSizeSmall),
-          hintTextDirection: TextDirection.rtl,
-        ),
+        decoration: widget.inputDecoration ??
+            InputDecoration(
+              errorText: '',
+              // 不显示错误提示
+              errorStyle: TextStyle(color: Colors.transparent, height: 0),
+              // 不显示错误提示
+              counterText: "",
+              // 不显示输入框最大字数统计
+              isCollapsed: widget.isCollapsed ?? false,
+              border: InputBorder.none,
+              labelStyle: TextStyle(
+                  color: widget.readOnly ?? false
+                      ? AppTheme.placeholderColor
+                      : AppTheme.titleColor),
+              hintText: widget.hintStr,
+              hintStyle: TextStyle(
+                  color: AppTheme.placeholderColor,
+                  fontSize: AppTheme.fontSizeSmall),
+              hintTextDirection: TextDirection.rtl,
+            ),
         validator: widget.validatorFn,
         autovalidate: true,
         enableSuggestions: false,

@@ -12,7 +12,7 @@ class RootView extends GetView<RootController> {
       builder: (context, delegate, current) {
         final title = current?.location;
         return Scaffold(
-
+          resizeToAvoidBottomInset: false, // 解决键盘顶起页面
           body: GetRouterOutlet(
             initialRoute: '/tabbar',
             // anchorRoute: '/',

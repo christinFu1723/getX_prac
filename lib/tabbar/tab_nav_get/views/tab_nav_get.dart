@@ -36,6 +36,7 @@ class TabNavigatorGet extends GetView<TabbarController> {
         }
 
         return Scaffold(
+          resizeToAvoidBottomInset: false, // 解决键盘顶起页面
           body: GetRouterOutlet(
             initialRoute: '/tabbar/home',
           ),
