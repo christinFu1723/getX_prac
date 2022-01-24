@@ -45,23 +45,24 @@ class SearchCompanyPage extends GetView<SearchCompanyController> {
   }
 
   Widget ListViewPage(BuildContext context) {
-    return LoadingContainer(
-      isLoading: controller.loading.value,
-      cover: true,
-      child: MediaQuery.removePadding(
-          removeTop: true,
-          context: context,
-          child: RefreshIndicator(
-              onRefresh: controller.handleRefresh,
-              child: Padding(
-                  padding: EdgeInsets.fromLTRB(0, 20, 0, 0),
-                  child: NotificationListener(
-                    child: ListView.builder(
-                        itemCount: controller.data?.length ?? 0,
-                        itemBuilder: (BuildContext context, int index) =>
-                            _child(index)),
-                  )))),
-    );
+    return Obx(() => LoadingContainer(
+          isLoading: controller.loading.value,
+          cover: true,
+          child: MediaQuery.removePadding(
+              removeTop: true,
+              context: context,
+              child: RefreshIndicator(
+                  onRefresh: controller.handleRefresh,
+                  child: Padding(
+                      padding: EdgeInsets.fromLTRB(0, 20, 0, 0),
+                      child: NotificationListener(
+                        child: Obx(() => ListView.builder(
+                            controller: controller.scrollController,
+                            itemCount: controller.data?.length ?? 0,
+                            itemBuilder: (BuildContext context, int index) =>
+                                _child(index))),
+                      )))),
+        ));
   }
 
   Widget _child(int index) {
@@ -76,12 +77,12 @@ class SearchCompanyPage extends GetView<SearchCompanyController> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
-                width: 60,
-                height: 60,
-                decoration: BoxDecoration(
-                    color: Color.fromRGBO(0, 0, 0, 0.2),
-                    borderRadius: BorderRadius.circular(5)),
-                child: Text('测试')),
+              width: 60,
+              height: 60,
+              decoration: BoxDecoration(
+                  color: Color.fromRGBO(0, 0, 0, 0.2),
+                  borderRadius: BorderRadius.circular(5)),
+            ),
             Expanded(
                 flex: 2,
                 child: Container(
@@ -90,7 +91,7 @@ class SearchCompanyPage extends GetView<SearchCompanyController> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        '测试名称',
+                        '${item['organizeName']}',
                         style: TextStyle(
                             fontSize: 16, fontWeight: FontWeight.w300),
                       ),
@@ -100,19 +101,19 @@ class SearchCompanyPage extends GetView<SearchCompanyController> {
                         decoration: BoxDecoration(
                             color: Colors.orangeAccent,
                             borderRadius: BorderRadius.circular(4)),
-                        child:
-                            Text('标签', style: TextStyle(color: Colors.white)),
+                        child: Text('标签${item['organizeStatus']}',
+                            style: TextStyle(color: Colors.white)),
                       ),
                       Container(
                           margin: EdgeInsets.only(top: 5),
-                          child: Text('创建人：XXXXX',
+                          child: Text('创建人：${item['platformAccountName']}',
                               style: TextStyle(
                                 fontSize: 12,
                                 color: Color.fromRGBO(0, 0, 0, 0.5),
                               ))),
                       Container(
                           margin: EdgeInsets.only(top: 5),
-                          child: Text('创建时间:XXXX',
+                          child: Text('创建时间:${item['gmtCreate']}',
                               style: TextStyle(
                                 fontSize: 12,
                                 color: Color.fromRGBO(0, 0, 0, 0.5),
