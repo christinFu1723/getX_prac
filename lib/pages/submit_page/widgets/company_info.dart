@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:demo7_pro/widgets/title.dart' show TitleSpan;
 import 'package:demo7_pro/config/theme.dart' show AppTheme;
 import 'package:demo7_pro/utils/validate.dart' show ValidateUtil;
-import 'package:demo7_pro/dto/company_info.dart' show CompanyInfo;
+import 'package:demo7_pro/model/company_info_entity.dart'
+    show CompanyInfoEntity;
 import 'package:logger/logger.dart';
 import 'package:flutter_rounded_date_picker/flutter_rounded_date_picker.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:demo7_pro/utils/time.dart' show TimeUtil;
 import 'package:demo7_pro/widgets/common/input.dart' show InputForm;
 import 'package:demo7_pro/widgets/common/input_decoration.dart'
@@ -15,10 +15,12 @@ import 'package:demo7_pro/widgets/common/img_upload_decorator.dart';
 
 class CompanyInfoSubmit extends StatefulWidget {
   final Function onNextStep;
-  final CompanyInfo form;
+  final CompanyInfoEntity form;
+  final bool isDetail;
 
   @override
-  CompanyInfoSubmit({Key key, this.onNextStep, this.form}) : super(key: key);
+  CompanyInfoSubmit({Key key, this.onNextStep, this.form, this.isDetail})
+      : super(key: key);
 
   @override
   _CompanyInfoSubmitState createState() => _CompanyInfoSubmitState();
@@ -39,7 +41,7 @@ class _CompanyInfoSubmitState extends State<CompanyInfoSubmit>
   TextEditingController contactMobileController;
   TextEditingController contactAddressController;
   TextEditingController attachesController;
-  CompanyInfo form;
+  CompanyInfoEntity form;
   List<String> initImgsShow;
 
   @override
@@ -48,7 +50,8 @@ class _CompanyInfoSubmitState extends State<CompanyInfoSubmit>
   @override
   initState() {
     form = widget.form;
-    initImgsShow = this.initImgUploadData(form.attaches) ?? [];
+
+    initImgsShow = this.initImgUploadData(form?.applyAttaches) ?? [];
     organizeNameController = TextEditingController();
     organizeSocialCodeController = TextEditingController();
     legalNameController = TextEditingController();
@@ -62,6 +65,17 @@ class _CompanyInfoSubmitState extends State<CompanyInfoSubmit>
     contactAddressController = TextEditingController();
     attachesController = TextEditingController();
     super.initState();
+  }
+
+  @override
+  didUpdateWidget(CompanyInfoSubmit oldWidget) {
+    print('子组件更新');
+
+    form = widget.form;
+
+    initImgsShow = this.initImgUploadData(form?.applyAttaches) ?? [];
+    print('查看${form?.toJson()}');
+    super.didUpdateWidget(oldWidget);
   }
 
   @override
@@ -82,9 +96,9 @@ class _CompanyInfoSubmitState extends State<CompanyInfoSubmit>
   }
 
   Widget build(BuildContext context) {
+    print('子组件渲染${form?.toJson()}');
     return SizedBox(
       child: Form(
-        key: _formKey,
         child: Column(
           children: [
             _companyInfoForm(),
@@ -125,8 +139,9 @@ class _CompanyInfoSubmitState extends State<CompanyInfoSubmit>
             InputStyleDecoration(
               '企业名称',
               InputForm(
+                  readOnly: widget.isDetail,
                   controller: organizeNameController,
-                  initVal: form.organizeName,
+                  initVal: form?.organizeName,
                   validatorFn: (
                     String value,
                   ) {
@@ -144,8 +159,9 @@ class _CompanyInfoSubmitState extends State<CompanyInfoSubmit>
             InputStyleDecoration(
               '社会统一信用代码',
               InputForm(
+                  readOnly: widget.isDetail,
                   controller: organizeSocialCodeController,
-                  initVal: form.organizeSocialCode,
+                  initVal: form?.organizeSocialCode,
                   validatorFn: (
                     String value,
                   ) {
@@ -163,8 +179,9 @@ class _CompanyInfoSubmitState extends State<CompanyInfoSubmit>
             InputStyleDecoration(
               '法定代表人',
               InputForm(
+                  readOnly: widget.isDetail,
                   controller: legalNameController,
-                  initVal: form.legalName,
+                  initVal: form?.legalName,
                   validatorFn: (
                     String value,
                   ) {
@@ -182,8 +199,9 @@ class _CompanyInfoSubmitState extends State<CompanyInfoSubmit>
             InputStyleDecoration(
               '法人手机号',
               InputForm(
+                  readOnly: widget.isDetail,
                   controller: legalMobileController,
-                  initVal: form.legalMobile,
+                  initVal: form?.legalMobile,
                   validatorFn: (
                     String value,
                   ) {
@@ -202,8 +220,9 @@ class _CompanyInfoSubmitState extends State<CompanyInfoSubmit>
             InputStyleDecoration(
               '法人身份证号',
               InputForm(
+                readOnly: widget.isDetail,
                 controller: legalIdCardNoController,
-                initVal: form.legalIdCardNo,
+                initVal: form?.legalIdCardNo,
                 validatorFn: (
                   String value,
                 ) {
@@ -222,8 +241,9 @@ class _CompanyInfoSubmitState extends State<CompanyInfoSubmit>
             InputStyleDecoration(
                 '注册资本',
                 InputForm(
+                    readOnly: widget.isDetail,
                     controller: organizeRegisteredCapitalController,
-                    initVal: form.organizeRegisteredCapital,
+                    initVal: form?.organizeRegisteredCapital,
                     validatorFn: (
                       String value,
                     ) {
@@ -249,16 +269,19 @@ class _CompanyInfoSubmitState extends State<CompanyInfoSubmit>
             InputStyleDecoration(
                 '注册时间',
                 InputForm(
+                  readOnly: widget.isDetail,
                   controller: organizeRegisteredTimeController,
-                  initVal: form.organizeRegisteredTime,
+                  initVal: form?.organizeRegisteredTime,
                   validatorFn: (
                     String value,
                   ) {
                     return _inputValidate(value,
                         validateType: 'mobile', errMsg: '请输入注册时间');
                   },
-                  readOnly: true,
                   onTap: () async {
+                    if (widget.isDetail) {
+                      return;
+                    }
                     Logger().i(form.organizeRegisteredTime != null
                         ? DateTime.parse(form.organizeRegisteredTime)
                         : DateTime.now());
@@ -287,8 +310,9 @@ class _CompanyInfoSubmitState extends State<CompanyInfoSubmit>
             InputStyleDecoration(
                 '注册地址',
                 InputForm(
+                    readOnly: widget.isDetail,
                     controller: organizeAddressController,
-                    initVal: form.organizeAddress,
+                    initVal: form?.organizeAddress,
                     validatorFn: (
                       String value,
                     ) {
@@ -326,8 +350,9 @@ class _CompanyInfoSubmitState extends State<CompanyInfoSubmit>
             InputStyleDecoration(
               '联系人',
               InputForm(
+                  readOnly: widget.isDetail,
                   controller: contactController,
-                  initVal: form.contact,
+                  initVal: form?.contact,
                   validatorFn: (
                     String value,
                   ) {
@@ -345,8 +370,9 @@ class _CompanyInfoSubmitState extends State<CompanyInfoSubmit>
             InputStyleDecoration(
               '联系人手机号',
               InputForm(
+                  readOnly: widget.isDetail,
                   controller: contactMobileController,
-                  initVal: form.contactMobile,
+                  initVal: form?.contactMobile,
                   validatorFn: (
                     String value,
                   ) {
@@ -365,8 +391,9 @@ class _CompanyInfoSubmitState extends State<CompanyInfoSubmit>
             InputStyleDecoration(
                 '联系地址',
                 InputForm(
+                    readOnly: widget.isDetail,
                     controller: contactAddressController,
-                    initVal: form.contactAddress,
+                    initVal: form?.contactAddress,
                     validatorFn: (
                       String value,
                     ) {
@@ -399,6 +426,7 @@ class _CompanyInfoSubmitState extends State<CompanyInfoSubmit>
         //   padding: EdgeInsets.fromLTRB(0, 20, 0, 0),
         // ),
         ImgUploadDecorator(
+            readOnly: widget.isDetail,
             maxLength: 1,
             initImgList: initImgsShow,
             imgListUploadCallback: handleImgChange),
@@ -410,8 +438,8 @@ class _CompanyInfoSubmitState extends State<CompanyInfoSubmit>
     List<String> arr = [];
     if (attaches != null) {
       for (var item in attaches) {
-        if (item['attachUrl'] != '' && item['attachUrl'] is String) {
-          arr.add(item['attachUrl']);
+        if (item.attachUrl != '' && item.attachUrl is String) {
+          arr.add(item.attachUrl);
         }
       }
     }
@@ -430,8 +458,8 @@ class _CompanyInfoSubmitState extends State<CompanyInfoSubmit>
       saveAttachesArr.add(obj);
     }
 
-    form.attaches = saveAttachesArr;
-    Logger().i('传回来的照片: ${form.attaches}');
+    form.applyAttaches = saveAttachesArr;
+    Logger().i('传回来的照片: ${form.applyAttaches}');
   }
 
   String _inputValidate(String value,

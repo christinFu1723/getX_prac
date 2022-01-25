@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:demo7_pro/widgets/title.dart' show TitleSpan;
 import 'package:demo7_pro/utils/validate.dart' show ValidateUtil;
-import 'package:demo7_pro/dto/company_info.dart' show CompanyInfo;
+
+import 'package:demo7_pro/model/company_info_entity.dart'
+    show CompanyInfoEntity;
 import 'package:logger/logger.dart';
 import 'package:demo7_pro/widgets/common/input.dart' show InputForm;
 import 'package:demo7_pro/widgets/common/input_decoration.dart'
@@ -9,10 +11,12 @@ import 'package:demo7_pro/widgets/common/input_decoration.dart'
 
 class AccountInfoSubmit extends StatefulWidget {
   final Function onNextStep;
-  final CompanyInfo form;
+  final CompanyInfoEntity form;
+  final bool isDetail;
 
   @override
-  AccountInfoSubmit({Key key, this.onNextStep, this.form}) : super(key: key);
+  AccountInfoSubmit({Key key, this.onNextStep, this.form, this.isDetail})
+      : super(key: key);
 
   @override
   _AccountInfoSubmitState createState() => _AccountInfoSubmitState();
@@ -24,7 +28,7 @@ class _AccountInfoSubmitState extends State<AccountInfoSubmit>
   TextEditingController organizeAccountNameController;
   TextEditingController organizeAccountMobileController;
   TextEditingController positionController;
-  CompanyInfo form;
+  CompanyInfoEntity form;
 
   @override
   bool get wantKeepAlive => true; // 防止页面tab切换以后，页面重绘
@@ -52,12 +56,10 @@ class _AccountInfoSubmitState extends State<AccountInfoSubmit>
   Widget build(BuildContext context) {
     return SizedBox(
       child: Form(
-        key: _formKey,
-        child: Column(
 
+        child: Column(
           children: [
             _accountInfoForm(),
-
             _nextBtn(),
           ],
         ),
@@ -93,8 +95,9 @@ class _AccountInfoSubmitState extends State<AccountInfoSubmit>
             InputStyleDecoration(
               '管理员名称',
               InputForm(
+                  readOnly: widget.isDetail,
                   controller: organizeAccountNameController,
-                  initVal: form.organizeAccountName,
+                  initVal: form?.organizeAccountName,
                   validatorFn: (
                     String value,
                   ) {
@@ -112,8 +115,9 @@ class _AccountInfoSubmitState extends State<AccountInfoSubmit>
             InputStyleDecoration(
               '管理员手机号',
               InputForm(
+                  readOnly: widget.isDetail,
                   controller: organizeAccountMobileController,
-                  initVal: form.organizeAccountMobile,
+                  initVal: form?.organizeAccountMobile,
                   validatorFn: (
                     String value,
                   ) {
@@ -131,8 +135,9 @@ class _AccountInfoSubmitState extends State<AccountInfoSubmit>
             InputStyleDecoration(
               '管理员职位名称',
               InputForm(
+                  readOnly: widget.isDetail,
                   controller: positionController,
-                  initVal: form.position,
+                  initVal: form?.position,
                   validatorFn: (
                     String value,
                   ) {

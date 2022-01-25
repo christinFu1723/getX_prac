@@ -67,61 +67,67 @@ class SearchCompanyPage extends GetView<SearchCompanyController> {
 
   Widget _child(int index) {
     var item = controller.data[index];
-    return Container(
-      margin: EdgeInsets.fromLTRB(20, 0, 20, 20),
-      padding: EdgeInsets.all(20),
-      decoration: BoxDecoration(
-          color: Colors.white, borderRadius: BorderRadius.circular(5)),
-      child: Flex(
-          direction: Axis.horizontal,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Container(
-              width: 60,
-              height: 60,
-              decoration: BoxDecoration(
-                  color: Color.fromRGBO(0, 0, 0, 0.2),
-                  borderRadius: BorderRadius.circular(5)),
-            ),
-            Expanded(
-                flex: 2,
-                child: Container(
-                  padding: EdgeInsets.only(left: 20),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        '${item['organizeName']}',
-                        style: TextStyle(
-                            fontSize: 16, fontWeight: FontWeight.w300),
-                      ),
-                      Container(
-                        margin: EdgeInsets.only(top: 10),
-                        padding: EdgeInsets.fromLTRB(10, 3, 10, 3),
-                        decoration: BoxDecoration(
-                            color: Colors.orangeAccent,
-                            borderRadius: BorderRadius.circular(4)),
-                        child: Text('标签${item['organizeStatus']}',
-                            style: TextStyle(color: Colors.white)),
-                      ),
-                      Container(
-                          margin: EdgeInsets.only(top: 5),
-                          child: Text('创建人：${item['platformAccountName']}',
-                              style: TextStyle(
-                                fontSize: 12,
-                                color: Color.fromRGBO(0, 0, 0, 0.5),
-                              ))),
-                      Container(
-                          margin: EdgeInsets.only(top: 5),
-                          child: Text('创建时间:${item['gmtCreate']}',
-                              style: TextStyle(
-                                fontSize: 12,
-                                color: Color.fromRGBO(0, 0, 0, 0.5),
-                              )))
-                    ],
-                  ),
-                ))
-          ]),
+    return GestureDetector(
+      onTap: (){
+        Get.rootDelegate.toNamed('/submit?id=${item.organizeNo}&status=${item.organizeStatus}&isDetail=true');
+      },
+      child: Container(
+        margin: EdgeInsets.fromLTRB(20, 0, 20, 20),
+        padding: EdgeInsets.all(20),
+        decoration: BoxDecoration(
+            color: Colors.white, borderRadius: BorderRadius.circular(5)),
+        child: Flex(
+            direction: Axis.horizontal,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                width: 60,
+                height: 60,
+                decoration: BoxDecoration(
+                    color: Color.fromRGBO(0, 0, 0, 0.2),
+                    borderRadius: BorderRadius.circular(5)),
+              ),
+              Expanded(
+                  flex: 2,
+                  child: Container(
+                    padding: EdgeInsets.only(left: 20),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          '${item.organizeName}',
+                          style: TextStyle(
+                              fontSize: 16, fontWeight: FontWeight.w300),
+                        ),
+                        Container(
+                          margin: EdgeInsets.only(top: 10),
+                          padding: EdgeInsets.fromLTRB(10, 3, 10, 3),
+                          decoration: BoxDecoration(
+                              color: Colors.orangeAccent,
+                              borderRadius: BorderRadius.circular(4)),
+                          child: Text(
+                              '${controller.operateStatusEnums(item.organizeStatus)}',
+                              style: TextStyle(color: Colors.white)),
+                        ),
+                        Container(
+                            margin: EdgeInsets.only(top: 5),
+                            child: Text('创建人：${item.platformAccountName}',
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  color: Color.fromRGBO(0, 0, 0, 0.5),
+                                ))),
+                        Container(
+                            margin: EdgeInsets.only(top: 5),
+                            child: Text('创建时间:${item.gmtCreate}',
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  color: Color.fromRGBO(0, 0, 0, 0.5),
+                                )))
+                      ],
+                    ),
+                  ))
+            ]),
+      ),
     );
   }
 
@@ -133,9 +139,8 @@ class SearchCompanyPage extends GetView<SearchCompanyController> {
         indicatorColor: AppTheme.secondColor,
         indicatorWeight: 2,
         indicatorSize: TabBarIndicatorSize.label,
-        onTap: (index) {
-          // _handleNextStepDone(nextStep: index);
-        },
+        isScrollable: true,
+        onTap: controller.handleStatusChange,
         tabs: _tabs(controller.searchEnums)));
   }
 
@@ -175,15 +180,12 @@ class SearchCompanyPage extends GetView<SearchCompanyController> {
   }
 
   Widget _searchBtn() {
-    return Obx(() => controller.organizeAccountName.value != ''
-        ? ElevatedButton(
-            child: Text('搜索'),
-            style: ElevatedButton.styleFrom(
-                minimumSize: Size(50, 30),
-                padding: EdgeInsets.fromLTRB(5, 0, 5, 2)),
-            onLongPress: () {},
-          )
-        : Container());
+    return ElevatedButton(
+      child: Text('搜索'),
+      style: ElevatedButton.styleFrom(
+          minimumSize: Size(50, 30), padding: EdgeInsets.fromLTRB(5, 0, 5, 2)),
+      onPressed: controller.handleSearchName,
+    );
   }
 
   Widget _searchInput() {

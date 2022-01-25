@@ -50,6 +50,19 @@ class _InputFormState extends State<InputForm> {
   }
 
   @override
+  didUpdateWidget(InputForm oldWidget) {
+    if (widget.initVal != null &&
+        widget.initVal != '' &&
+        widget.controller != null) {
+      Future.delayed(Duration(milliseconds: 100)).then((e) {
+        widget.controller.text = widget.initVal;
+      });
+
+    }
+    super.didUpdateWidget(oldWidget);
+  }
+
+  @override
   Widget build(BuildContext context) {
     return TextFormField(
         enabled: widget.enabled ?? true,

@@ -3,21 +3,28 @@ import 'package:flutter/material.dart';
 import 'package:demo7_pro/widgets/title.dart' show TitleSpan;
 import 'package:demo7_pro/config/theme.dart' show AppTheme;
 import 'package:demo7_pro/utils/validate.dart' show ValidateUtil;
-import 'package:demo7_pro/dto/company_info.dart' show CompanyInfo;
+
+import 'package:demo7_pro/model/company_info_entity.dart'
+    show CompanyInfoEntity, CompanyInfoProducts;
 import 'package:logger/logger.dart';
 import 'package:flutter_rounded_date_picker/flutter_rounded_date_picker.dart';
 import 'package:demo7_pro/utils/time.dart' show TimeUtil;
 import 'package:demo7_pro/widgets/common/input.dart' show InputForm;
 import 'package:demo7_pro/widgets/common/input_decoration.dart'
     show InputStyleDecoration;
-import 'package:demo7_pro/widgets/common/checkbox_group.dart' show CheckBoxGroup;
+import 'package:demo7_pro/widgets/common/checkbox_group.dart'
+    show CheckBoxGroup;
+import 'package:demo7_pro/generated/json/base/json_convert_content.dart'
+    show JsonConvert;
 
 class PackageChoose extends StatefulWidget {
   final Function onNextStep;
-  final CompanyInfo form;
+  final CompanyInfoEntity form;
+  final bool isDetail;
 
   @override
-  PackageChoose({Key key, this.onNextStep, this.form}) : super(key: key);
+  PackageChoose({Key key, this.onNextStep, this.form, this.isDetail})
+      : super(key: key);
 
   @override
   _PackageChooseState createState() => _PackageChooseState();
@@ -25,12 +32,10 @@ class PackageChoose extends StatefulWidget {
 
 class _PackageChooseState extends State<PackageChoose>
     with AutomaticKeepAliveClientMixin {
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-
   TextEditingController effectiveDateController;
   TextEditingController expireDateController;
 
-  CompanyInfo form;
+  CompanyInfoEntity form;
 
   List<Map<String, dynamic>> checkboxGroup = [
     {'title': '智能视频', 'value': '0001', 'contractedPrice': '0'},
@@ -42,7 +47,11 @@ class _PackageChooseState extends State<PackageChoose>
 
   @override
   initState() {
-    form = widget.form;
+    setState(() {
+      form = widget.form;
+    });
+
+
 
     effectiveDateController = TextEditingController();
     expireDateController = TextEditingController();
@@ -52,6 +61,7 @@ class _PackageChooseState extends State<PackageChoose>
 
   @override
   dispose() {
+    expireDateController?.dispose();
     effectiveDateController?.dispose();
 
     super.dispose();
@@ -60,7 +70,6 @@ class _PackageChooseState extends State<PackageChoose>
   Widget build(BuildContext context) {
     return SizedBox(
       child: Form(
-        key: _formKey,
         child: Column(
           children: [
             _companyInfoForm(),
@@ -153,20 +162,25 @@ class _PackageChooseState extends State<PackageChoose>
   }
 
   void groupChangeCb(List<Map<String, dynamic>> group) {
-    if(group is List<Map<String,dynamic>>){
-      var arr = [];
-      for(var item in group){
-        if(item['selected']=='true'){
-          arr.add({
-            'productNo':item['value'],
-            'contractedPrice':item['contractedPrice']??'0',
-            'giftContractFlag':item['giftContractFlag']??'N'
-          });
+    if (group is List<Map<String, dynamic>>) {
+      List<CompanyInfoProducts> arr = [];
+      for (var item in group) {
+        if (item['selected'] == 'true') {
+          var itemJson = {
+            'productNo': item['value'],
+            'contractedPrice': item['contractedPrice'] ?? '0',
+            'giftContractFlag': item['giftContractFlag'] ?? 'N'
+          };
+          CompanyInfoProducts itemObj = JsonConvert.fromJsonAsT(itemJson);
+          arr.add(itemObj);
         }
-
       }
-      form.products=arr;
-      Logger().i('最终存入的：${form.products}');
+      if (form != null) {
+        form.products = arr;
+        Logger().i('最终存入的：${form.toJson()}');
+      }
+
+
     }
   }
 
@@ -184,24 +198,27 @@ class _PackageChooseState extends State<PackageChoose>
             InputStyleDecoration(
                 '合同起始日期',
                 InputForm(
+                  readOnly: widget.isDetail,
                   controller: effectiveDateController,
-                  initVal: form.effectiveDate,
+                  initVal: form?.effectiveDate,
                   validatorFn: (
                     String value,
                   ) {
                     return _inputValidate(value,
                         validateType: 'mobile', errMsg: '请选择合同起始日期');
                   },
-                  readOnly: true,
                   onTap: () async {
-                    Logger().i(form.effectiveDate != null
-                        ? DateTime.parse(form.effectiveDate)
+                    if (widget.isDetail) {
+                      return;
+                    }
+                    Logger().i(form?.effectiveDate != null
+                        ? DateTime.parse(form?.effectiveDate)
                         : DateTime.now());
                     DateTime newDateTime = await showRoundedDatePicker(
                       context: context,
                       locale: Locale("zh", "CN"),
-                      initialDate: form.effectiveDate != null
-                          ? DateTime.parse(form.effectiveDate)
+                      initialDate: form?.effectiveDate != null
+                          ? DateTime.parse(form?.effectiveDate)
                           : DateTime.now(),
                       firstDate: DateTime(DateTime.now().year - 1),
                       lastDate: DateTime(DateTime.now().year + 1),
@@ -210,7 +227,7 @@ class _PackageChooseState extends State<PackageChoose>
 
                     var dateStr = TimeUtil.DateTime2YMD(newDateTime);
                     effectiveDateController.text = dateStr;
-                    form.effectiveDate = dateStr;
+                    form?.effectiveDate = dateStr;
                   },
                   onChange: (String value) {},
                   hintStr: '请选择合同起始日期',
@@ -223,23 +240,26 @@ class _PackageChooseState extends State<PackageChoose>
                 '合同终止日期',
                 InputForm(
                   controller: expireDateController,
-                  initVal: form.expireDate,
+                  initVal: form?.expireDate,
                   validatorFn: (
                     String value,
                   ) {
                     return _inputValidate(value,
                         validateType: 'mobile', errMsg: '请选择合同终止日期');
                   },
-                  readOnly: true,
+                  readOnly: widget.isDetail,
                   onTap: () async {
-                    Logger().i(form.expireDate != null
-                        ? DateTime.parse(form.expireDate)
+                    if (widget.isDetail) {
+                      return;
+                    }
+                    Logger().i(form?.expireDate != null
+                        ? DateTime.parse(form?.expireDate)
                         : DateTime.now());
                     DateTime newDateTime = await showRoundedDatePicker(
                       context: context,
                       locale: Locale("zh", "CN"),
-                      initialDate: form.expireDate != null
-                          ? DateTime.parse(form.expireDate)
+                      initialDate: form?.expireDate != null
+                          ? DateTime.parse(form?.expireDate)
                           : DateTime.now(),
                       firstDate: DateTime(DateTime.now().year - 1),
                       lastDate: DateTime(DateTime.now().year + 1),
@@ -248,7 +268,7 @@ class _PackageChooseState extends State<PackageChoose>
 
                     var dateStr = TimeUtil.DateTime2YMD(newDateTime);
                     expireDateController.text = dateStr;
-                    form.expireDate = dateStr;
+                    form?.expireDate = dateStr;
                   },
                   onChange: (String value) {},
                   hintStr: '请选择合同终止日期',

@@ -12,8 +12,14 @@ class ImgUploadDecorator extends StatefulWidget {
   final int maxLength;
   final List<String> initImgList;
   final Function(List<String> imgUrlList) imgListUploadCallback;
+  final bool readOnly;
 
-  ImgUploadDecorator({Key key, this.maxLength = 9, this.initImgList,this.imgListUploadCallback})
+  ImgUploadDecorator(
+      {Key key,
+      this.maxLength = 9,
+      this.initImgList,
+      this.imgListUploadCallback,
+      this.readOnly})
       : super(key: key);
 
   @override
@@ -26,10 +32,17 @@ class _ImgUploadDecoratorState extends State<ImgUploadDecorator> {
   @override
   void initState() {
     setState(() {
-      this.imgList = widget.initImgList??[];
-
+      this.imgList = widget.initImgList ?? [];
     });
     super.initState();
+  }
+
+  @override
+  didUpdateWidget(ImgUploadDecorator oldWidget) {
+
+    this.imgList = widget.initImgList ?? [];
+    print('查看图片上传${this.imgList}');
+    super.didUpdateWidget(oldWidget);
   }
 
   Widget build(BuildContext context) {
@@ -46,7 +59,9 @@ class _ImgUploadDecoratorState extends State<ImgUploadDecorator> {
           itemCount: showGridBlock.length,
           itemBuilder: (BuildContext context, int index) {
             return showGridBlock[index] == 'add'
-                ? _addNewImg()
+                ? widget.readOnly
+                    ? Container()
+                    : _addNewImg()
                 : _ImgGridItem(showGridBlock[index], index);
           }),
     );
@@ -74,15 +89,17 @@ class _ImgUploadDecoratorState extends State<ImgUploadDecorator> {
           Positioned(
               top: 5,
               right: 5,
-              child: GestureDetector(
-                child: Icon(
-                  Icons.delete_forever,
-                  color: AppTheme.sitDangerColor,
-                ),
-                onTap: () {
-                  _deleteImg(index);
-                },
-              ))
+              child: widget.readOnly
+                  ? Container()
+                  : GestureDetector(
+                      child: Icon(
+                        Icons.delete_forever,
+                        color: AppTheme.sitDangerColor,
+                      ),
+                      onTap: () {
+                        _deleteImg(index);
+                      },
+                    ))
         ],
       ),
     );
@@ -104,14 +121,14 @@ class _ImgUploadDecoratorState extends State<ImgUploadDecorator> {
         imgList.removeAt(index);
       });
     }
-    if(widget.imgListUploadCallback!=null){
-      widget.imgListUploadCallback.call(this.imgList);// 上传成功后把页面显示的imgUrl全部返回
+    if (widget.imgListUploadCallback != null) {
+      widget.imgListUploadCallback.call(this.imgList); // 上传成功后把页面显示的imgUrl全部返回
     }
   }
 
   List<String> get showGridBlock {
     List<String> imgShowArr = [];
-    if(this.imgList!=null){
+    if (this.imgList != null) {
       imgShowArr.addAll(this.imgList);
       if (widget.maxLength > 0 && this.imgList.length < widget.maxLength) {
         imgShowArr.add('add'); // 如果最大限制存在，且当前渲染项小于最大限制
@@ -124,18 +141,18 @@ class _ImgUploadDecoratorState extends State<ImgUploadDecorator> {
     return imgShowArr;
   }
 
-  int get pickerMaxLength{
-    int maxNumb= widget.maxLength-this.imgList.length;
-    if(maxNumb<=0){
-      maxNumb=1;
+  int get pickerMaxLength {
+    int maxNumb = widget.maxLength - this.imgList.length;
+    if (maxNumb <= 0) {
+      maxNumb = 1;
     }
     return maxNumb;
   }
 
   Widget _addNewImg() {
     return ImgUpload(
-      maxLength: pickerMaxLength,
-      isMulti: true,
+        maxLength: pickerMaxLength,
+        isMulti: true,
         child: Container(
           color: Colors.white,
           alignment: Alignment.center,
@@ -158,12 +175,13 @@ class _ImgUploadDecoratorState extends State<ImgUploadDecorator> {
         onChangeFn: _onChange);
   }
 
-  void _onSuccessFn(List<String> urlList) { // 返回上传成功后的图片
+  void _onSuccessFn(List<String> urlList) {
+    // 返回上传成功后的图片
     setState(() {
       this.imgList.addAll(urlList);
     });
-    if(widget.imgListUploadCallback!=null){
-      widget.imgListUploadCallback.call(this.imgList);// 上传成功后把页面显示的imgUrl全部返回
+    if (widget.imgListUploadCallback != null) {
+      widget.imgListUploadCallback.call(this.imgList); // 上传成功后把页面显示的imgUrl全部返回
     }
   }
 
