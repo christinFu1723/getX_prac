@@ -53,7 +53,7 @@ class _CompanyInfoSubmitState extends State<CompanyInfoSubmit>
   initState() {
     form = widget.form;
 
-    initImgsShow = this.initImgUploadData(form?.applyAttaches) ?? [];
+    initImgsShow = this.initImgUploadData(form?.attaches) ?? [];
     organizeNameController = TextEditingController();
     organizeSocialCodeController = TextEditingController();
     legalNameController = TextEditingController();
@@ -75,7 +75,7 @@ class _CompanyInfoSubmitState extends State<CompanyInfoSubmit>
 
     form = widget.form;
 
-    initImgsShow = this.initImgUploadData(form?.applyAttaches) ?? [];
+    initImgsShow = this.initImgUploadData(form?.attaches) ?? [];
     print('查看${form?.toJson()}');
     super.didUpdateWidget(oldWidget);
   }
