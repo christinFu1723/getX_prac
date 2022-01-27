@@ -51,8 +51,7 @@ class _PackageChooseState extends State<PackageChoose>
       form = widget.form;
     });
 
-
-
+    initCheckboxGroup();
     effectiveDateController = TextEditingController();
     expireDateController = TextEditingController();
 
@@ -109,6 +108,7 @@ class _PackageChooseState extends State<PackageChoose>
               color: Colors.transparent,
               borderRadius: BorderRadius.circular(6)),
           child: CheckBoxGroup(
+            readOnly: widget.isDetail,
             group: checkboxGroup,
             handleGroupChange: groupChangeCb,
             childCreateFn: packagesPrices,
@@ -134,7 +134,8 @@ class _PackageChooseState extends State<PackageChoose>
                   ? AppTheme.secondColor.withOpacity(0.5)
                   : Colors.transparent)),
       child: InputForm(
-          readOnly: item['selected'] == 'true' ? false : true,
+          readOnly:
+              item['selected'] == 'true' && (!widget.isDetail) ? false : true,
           textAlign: TextAlign.center,
           controller: item['controller'] is TextEditingController
               ? item['controller']
@@ -148,9 +149,9 @@ class _PackageChooseState extends State<PackageChoose>
           },
           onChange: (String value) {
             try {
-              setState(() {
+
                 group[index]['contractedPrice'] = value;
-              });
+
               handleGroupChange(group); // 传递出数组变化
             } catch (e) {
               Logger().e(e);
@@ -179,8 +180,20 @@ class _PackageChooseState extends State<PackageChoose>
         form.products = arr;
         Logger().i('最终存入的：${form.toJson()}');
       }
+    }
+  }
 
-
+  // 初始化多选框
+  void initCheckboxGroup() {
+    if (form!=null&&form.signProducts != null && form.signProducts.length > 0) {
+      for (var item in form.signProducts) {
+        for (var secItem in checkboxGroup) {
+          if (secItem['value'] == item.productNo) {
+            secItem['selected'] = 'true';
+            secItem['contractedPrice'] = item.contractedPrice ?? 0;
+          }
+        }
+      }
     }
   }
 

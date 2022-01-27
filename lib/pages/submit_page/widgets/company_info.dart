@@ -4,7 +4,9 @@ import 'package:demo7_pro/widgets/title.dart' show TitleSpan;
 import 'package:demo7_pro/config/theme.dart' show AppTheme;
 import 'package:demo7_pro/utils/validate.dart' show ValidateUtil;
 import 'package:demo7_pro/model/company_info_entity.dart'
-    show CompanyInfoEntity;
+    show CompanyInfoEntity,CompanyInfoAttaches;
+import 'package:demo7_pro/generated/json/base/json_convert_content.dart'
+    show JsonConvert;
 import 'package:logger/logger.dart';
 import 'package:flutter_rounded_date_picker/flutter_rounded_date_picker.dart';
 import 'package:demo7_pro/utils/time.dart' show TimeUtil;
@@ -448,18 +450,19 @@ class _CompanyInfoSubmitState extends State<CompanyInfoSubmit>
   }
 
   void handleImgChange(List<String> imgs) {
-    var saveAttachesArr = [];
+    List<CompanyInfoAttaches> saveAttachesArr = [];
     var obj;
     if (imgs != null && imgs.length >= 1) {
       obj = {
         'attachType': '1001',
         'attachUrl': imgs[0],
       };
-      saveAttachesArr.add(obj);
+      saveAttachesArr.add(JsonConvert.fromJsonAsT(obj));
     }
 
-    form.applyAttaches = saveAttachesArr;
-    Logger().i('传回来的照片: ${form.applyAttaches}');
+    form.attaches = saveAttachesArr;
+    Logger().i('传回来的照片: ${form.attaches}');
+    Logger().i('传回来的照片: ${form.toJson()}');
   }
 
   String _inputValidate(String value,

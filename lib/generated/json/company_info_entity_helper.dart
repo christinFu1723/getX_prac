@@ -1,4 +1,8 @@
 import 'package:demo7_pro/model/company_info_entity.dart';
+import 'package:demo7_pro/utils/app.dart' show AppUtil;
+import 'package:demo7_pro/utils/validate.dart' show ValidateUtil;
+import 'package:demo7_pro/utils/string.dart' show StringUtil;
+import 'package:logger/logger.dart';
 
 companyInfoEntityFromJson(CompanyInfoEntity data, Map<String, dynamic> json) {
 	if (json['organizeNo'] != null) {
@@ -58,8 +62,14 @@ companyInfoEntityFromJson(CompanyInfoEntity data, Map<String, dynamic> json) {
 	if (json['products'] != null) {
 		data.products = (json['products'] as List).map((v) => CompanyInfoProducts().fromJson(v)).toList();
 	}
+	if (json['signProducts'] != null) {
+		data.signProducts = (json['signProducts'] as List).map((v) => CompanyInfoProducts().fromJson(v)).toList();
+	}
 	if (json['applyAttaches'] != null) {
 		data.applyAttaches = (json['applyAttaches'] as List).map((v) => CompanyInfoAttaches().fromJson(v)).toList();
+	}
+	if (json['attaches'] != null) {
+		data.attaches = (json['attaches'] as List).map((v) => CompanyInfoAttaches().fromJson(v)).toList();
 	}
 	return data;
 }
@@ -85,7 +95,9 @@ Map<String, dynamic> companyInfoEntityToJson(CompanyInfoEntity entity) {
 	data['expireDate'] = entity.expireDate;
 	data['subAccountNum'] = entity.subAccountNum;
 	data['products'] =  entity.products?.map((v) => v.toJson())?.toList();
+	data['signProducts'] =  entity.signProducts?.map((v) => v.toJson())?.toList();
 	data['applyAttaches'] =  entity.applyAttaches?.map((v) => v.toJson())?.toList();
+	data['attaches'] =  entity.attaches?.map((v) => v.toJson())?.toList();
 	return data;
 }
 

@@ -11,9 +11,9 @@ class CheckBoxGroup extends StatefulWidget {
           Function(List<Map<String, dynamic>> group) handleGroupChange)
       childCreateFn;
   final Function(List<Map<String, dynamic>> group) handleGroupChange;
-
+  final bool readOnly;
   CheckBoxGroup(
-      {Key key, this.group, this.childCreateFn, this.handleGroupChange})
+      {Key key, this.readOnly,this.group, this.childCreateFn, this.handleGroupChange})
       : super(key: key);
 
   @override
@@ -69,7 +69,7 @@ class _CheckBoxGroupState extends State<CheckBoxGroup> {
                 BoxShadow(
                     color: item['selected'] == 'true'
                         ? AppTheme.secondColor
-                        : AppTheme.lightTextColor.withOpacity(0.6),
+                        :  AppTheme.lightTextColor.withOpacity(0.6),
                     blurRadius: 1.5)
               ]),
           child: Row(
@@ -96,6 +96,9 @@ class _CheckBoxGroupState extends State<CheckBoxGroup> {
             ],
           )),
       onTap: () {
+        if(widget.readOnly??false){
+          return;
+        }
         setState(() {
           if (widget.group[index]['selected'] != 'true') {
             widget.group[index]['selected'] = 'true';

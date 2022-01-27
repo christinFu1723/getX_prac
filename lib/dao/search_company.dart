@@ -5,7 +5,8 @@ import 'package:demo7_pro/dto/search_company_entity.dart'
     show SearchCompanyEntity; // 搜索企业接口而入参
 import 'package:demo7_pro/model/search_company_list_entity.dart'
     show SearchCompanyListEntity; // 搜索企业列表回参
-import 'package:demo7_pro/model/company_info_entity.dart' show CompanyInfoEntity;
+import 'package:demo7_pro/model/company_info_entity.dart'
+    show CompanyInfoEntity;
 import 'package:demo7_pro/generated/json/base/json_convert_content.dart'
     show JsonConvert;
 
@@ -29,6 +30,7 @@ class SearchCompanyRequest {
     }
     return respJson;
   }
+
   // 获取企业详情
   static Future<dynamic> getItem(String organizeNo) async {
     final resp = await HttpUtil.instance.get(
@@ -40,5 +42,15 @@ class SearchCompanyRequest {
       respJson = JsonConvert.fromJsonAsT(resp['data']);
     }
     return respJson;
+  }
+
+  // 新增企业
+  static Future<dynamic> addItem(CompanyInfoEntity form) async {
+    final resp = await HttpUtil.instance
+        .post('$baseUrl/api/mini/v1/organizes/organize', data: form.toJson());
+
+    if (resp['code'] == 200) {
+      JsonConvert.fromJsonAsT(resp['data']);
+    }
   }
 }

@@ -5,7 +5,7 @@ import 'package:demo7_pro/utils/idCard.dart' show IdCardUtil;
 /// 验证辅助
 class ValidateUtil {
   /// 校验一级数组的key值是否填充？
-  static bool verifyObjArrFilled({@required List arr, @required String key}) {
+  static bool verifyObjArrFilled({@required List arr, @required String key,bool isObject=false}) {
     if(arr==null||key==null){
       return false;
     }
@@ -13,7 +13,14 @@ class ValidateUtil {
     if (arr.length > 0) {
       if (key != '' && key != null) {
         for (var item in arr) {
-          flg = flg && item[key] != '' && item[key] != null;
+          if(isObject){
+            var itemJSON = item.toJson();
+            flg = flg && itemJSON[key] != '' && itemJSON[key] != null;
+          }
+          else{
+            flg = flg && item[key] != '' && item[key] != null;
+          }
+
         }
       }
     } else {

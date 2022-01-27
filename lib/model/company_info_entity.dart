@@ -23,8 +23,12 @@ class CompanyInfoEntity with JsonConvert<CompanyInfoEntity> {
   String effectiveDate;
   String expireDate;
   String subAccountNum;
+
   List<CompanyInfoProducts> products;
+  List<CompanyInfoProducts> signProducts;
   List<CompanyInfoAttaches> applyAttaches;
+  List<CompanyInfoAttaches> attaches;
+
 
   bool validateCompanyBaseInfo() {
     try {
@@ -64,7 +68,7 @@ class CompanyInfoEntity with JsonConvert<CompanyInfoEntity> {
         errorMsg += '企业名称,';
       }
       if (!ValidateUtil.verifyObjArrFilled(
-          arr: this.applyAttaches, key: 'attachUrl')) {
+          arr: this.attaches, key: 'attachUrl',isObject:true)) {
         errorMsg += '证照信息,';
       }
 

@@ -14,6 +14,7 @@ import 'package:demo7_pro/utils/app.dart';
 import 'package:demo7_pro/dao/search_company.dart' show SearchCompanyRequest;
 import 'package:demo7_pro/model/company_info_entity.dart'
     show CompanyInfoEntity;
+import 'package:logger/logger.dart';
 
 class SubmitPage extends StatefulWidget {
   @override
@@ -27,8 +28,6 @@ class _SubmitPageState extends State<SubmitPage> with TickerProviderStateMixin {
   ScrollController _nestedScrollCtrl;
   CompanyInfoEntity form;
   bool isDetail = false; // 是否是详情
-
-
 
   @override
   initState() {
@@ -197,6 +196,7 @@ class _SubmitPageState extends State<SubmitPage> with TickerProviderStateMixin {
       var resp = await SearchCompanyRequest.getItem(organizeNo);
       setState(() {
         this.form = resp;
+        this.form.attaches = form.applyAttaches;
       });
 
       AppUtil.showToast('请求成功');
@@ -213,6 +213,7 @@ class _SubmitPageState extends State<SubmitPage> with TickerProviderStateMixin {
 
   _handleNextStepDone({@required int nextStep}) {
     if (nextStep >= timeline.length) {
+      _handleAddItem();
       return;
     }
     _tabController.index = nextStep;
@@ -222,5 +223,22 @@ class _SubmitPageState extends State<SubmitPage> with TickerProviderStateMixin {
     setState(() {
       this.nowStep = nextStep;
     });
+
+    Logger().i(form.toJson());
+  }
+
+  Future _handleAddItem() async {
+    try {
+      AppUtil.showLoading();
+
+      this.form.subAccountNum = '-1';
+      await SearchCompanyRequest.addItem(this.form);
+      Get.rootDelegate.toNamed('/tabbar/search-company');
+      AppUtil.showToast('请求成功');
+    } catch (e) {
+      AppUtil.showToast(e);
+    } finally {
+      AppUtil.hideLoading();
+    }
   }
 }
